@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NorthWatch Tech — Security, Installs & Repairs · Plymouth, IN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Orbitron:wght@700;900&display=swap');
+
+  :root {
+    --black:   #080c10;
+    --deep:    #0d1117;
+    --panel:   #111820;
+    --steel:   #1a2535;
+    --cyan:    #00d4ff;
+    --green:   #00ff88;
+    --amber:   #ffaa00;
+    --red:     #ff3333;
+    --muted:   #4a6070;
+    --text:    #c8d8e8;
+    --white:   #f0f6ff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCANLINE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,212,255,0.015) 2px,
+      rgba(0,212,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,212,255,0.12);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.08em;
+  }
+  .nav-logo span { color: var(--cyan); }
+
+  nav ul {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--cyan); }
+
+  .nav-cta {
+    background: var(--cyan);
+    color: var(--black) !important;
+    padding: 8px 20px;
+    border-radius: 2px;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: #00b8dd; color: var(--black) !important; }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 120px 24px 80px;
+  }
+
+  /* Grid background */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridScroll 20s linear infinite;
+  }
+  @keyframes gridScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 60px; }
+  }
+
+  /* Radial glow */
+  #hero::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 600px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.55s forwards;
+  }
+  h1 span { color: var(--cyan); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 24px auto 48px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.75s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.95s forwards;
+  }
+
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--black);
+    padding: 14px 32px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: #00b8dd; transform: translateY(-2px); }
+
+  .btn-ghost {
+    border: 1px solid var(--muted);
+    color: var(--text);
+    padding: 14px 32px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+
+  /* ─── FLOATING CAMERAS CANVAS ─── */
+  #cam-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── SECTION SHARED ─── */
+  section {
+    position: relative;
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  h2 span { color: var(--cyan); }
+
+  .section-intro {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 520px;
+    margin-bottom: 64px;
+  }
+
+  /* ─── CAMERA SHOWCASE ─── */
+  #cameras { border-bottom: 1px solid rgba(0,212,255,0.08); }
+
+  .camera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .cam-card {
+    background: var(--panel);
+    border: 1px solid rgba(0,212,255,0.1);
+    border-radius: 4px;
+    padding: 28px 20px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .cam-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .cam-card:hover::before { transform: scaleX(1); }
+  .cam-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-4px); }
+
+  .cam-icon {
+    width: 72px; height: 72px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cam-icon svg { width: 100%; height: 100%; }
+
+  /* Scan line animation inside cam card */
+  .cam-scan {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0;
+    animation: none;
+  }
+  .cam-card:hover .cam-scan {
+    opacity: 1;
+    animation: scanDown 1.5s ease infinite;
+  }
+  @keyframes scanDown {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+
+  .cam-brand {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+  .cam-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .cam-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* recording dot */
+  .rec-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--red);
+    margin-right: 6px;
+    animation: blink 1.4s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ─── SERVICES GRID ─── */
+  #services { border-bottom: 1px solid rgba(0,212,255,0.08); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .service-card:hover {
+    border-color: rgba(0,212,255,0.25);
+    transform: translateY(-3px);
+  }
+  .service-card .corner {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    border-top: 1px solid rgba(0,212,255,0.15);
+    border-left: 1px solid rgba(0,212,255,0.15);
+  }
+
+  .svc-icon {
+    width: 48px; height: 48px;
+    margin-bottom: 20px;
+  }
+  .svc-icon svg { width: 48px; height: 48px; }
+
+  .svc-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+  .svc-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .svc-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78rem;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── PRICING STRIP ─── */
+  #pricing {
+    background: var(--deep);
+    max-width: 100%;
+    border-top: 1px solid rgba(0,212,255,0.08);
+    border-bottom: 1px solid rgba(0,212,255,0.08);
+    padding: 100px 48px;
+  }
+  #pricing .inner { max-width: 1200px; margin: 0 auto; }
+
+  .pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    font-size: 0.88rem;
+  }
+  .pricing-table thead tr {
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+  }
+  .pricing-table th {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 16px;
+    text-align: left;
+  }
+  .pricing-table th:last-child { text-align: right; }
+  .pricing-table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s;
+  }
+  .pricing-table tbody tr:hover { background: rgba(0,212,255,0.03); }
+  .pricing-table td {
+    padding: 16px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .pricing-table td:last-child {
+    text-align: right;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.82rem;
+    color: var(--cyan);
+  }
+  .pricing-table .row-label {
+    font-weight: 600;
+    color: var(--white);
+    font-size: 0.9rem;
+  }
+  .pricing-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+  .tag-cam { background: rgba(0,212,255,0.12); color: var(--cyan); }
+  .tag-surcharge { background: rgba(255,170,0,0.12); color: var(--amber); }
+  .tag-labor { background: rgba(0,255,136,0.12); color: var(--green); }
+
+  /* ─── WHY US ─── */
+  #why {
+    border-bottom: 1px solid rgba(0,212,255,0.08);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .why-item {
+    background: var(--panel);
+    padding: 40px 28px;
+    transition: background 0.3s;
+  }
+  .why-item:hover { background: var(--steel); }
+  .why-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: rgba(0,212,255,0.15);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .why-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .why-body {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    text-align: center;
+    padding: 120px 24px;
+  }
+  .contact-glow {
+    display: inline-block;
+    width: 1px; height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--cyan));
+    margin-bottom: 40px;
+  }
+  .contact-tel {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 12px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-tel:hover { color: var(--cyan); }
+  .contact-note {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 48px;
+  }
+  .service-area {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 40px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid rgba(0,212,255,0.08);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  footer .logo-sm {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    color: var(--white);
+  }
+  footer .logo-sm span { color: var(--cyan); }
+
+  /* ─── KEYFRAMES ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 72px;
+    padding: 16px 32px;
+    background: rgba(0,212,255,0.03);
+    border: 1px solid rgba(0,212,255,0.1);
+    border-radius: 2px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .status-item {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-dot-green {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s ease infinite;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav ul { display: none; }
+    section { padding: 64px 20px; }
+    #pricing { padding: 64px 20px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .status-bar { flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NORTH<span>WATCH</span> TECH</div>
+  <ul>
+    <li><a href="#cameras">Cameras</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="cam-canvas"></canvas>
+
+  <div class="hero-eyebrow"><span class="rec-dot"></span> Serving Plymouth, Marshall County & Northern Indiana</div>
+
+  <h1>Your Home.<br><span>Secured. Connected.</span><br>Running Right.</h1>
+
+  <p class="hero-sub">Professional camera installs, TV mounting, speaker setups, computer repair, and Wi-Fi fixes — done right the first time.</p>
+
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="openQuote()" style="border:none;cursor:pointer;">Get a Free Quote</button>
+    <a href="#services" class="btn-ghost" onclick="event.preventDefault();document.getElementById('services').scrollIntoView({behavior:'smooth'})">See All Services</a>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-item"><span class="status-dot-green"></span> Same-Week Availability</div>
+    <div class="status-item"><span class="status-dot-green"></span> Flat-Rate Pricing</div>
+    <div class="status-item"><span class="status-dot-green"></span> Satisfaction Guaranteed</div>
+  </div>
+</section>
+
+<!-- CAMERAS -->
+<section id="cameras">
+  <div class="section-label">Camera Systems</div>
+  <h2>Every Camera.<br><span>Expert Installation.</span></h2>
+  <p class="section-intro">From Ring doorbells to commercial-grade PTZ systems — if it protects your property, Conor installs it.</p>
+
+  <div class="camera-grid">
+
+    <div class="cam-card reveal">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ring Doorbell -->
+          <rect x="22" y="12" width="28" height="48" rx="8" fill="#1a2535" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="32" r="10" fill="#111820" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="32" r="5" fill="#00d4ff" opacity="0.3"/>
+          <circle cx="36" cy="32" r="2.5" fill="#00d4ff"/>
+          <rect x="32" y="50" width="8" height="4" rx="2" fill="#00d4ff" opacity="0.4"/>
+          <rect x="30" y="14" width="12" height="6" rx="3" fill="#00d4ff" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Ring</div>
+      <div class="cam-name">Video Doorbells</div>
+      <div class="cam-desc">Pro & Elite series. Wired to existing transformer. Motion alerts + two-way audio.</div>
+    </div>
+
+    <div class="cam-card reveal reveal-delay-1">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Wire-free outdoor cam -->
+          <rect x="12" y="24" width="40" height="26" rx="6" fill="#1a2535" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="32" cy="37" r="9" fill="#111820" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="32" cy="37" r="4.5" fill="#00d4ff" opacity="0.2"/>
+          <circle cx="32" cy="37" r="2" fill="#00d4ff"/>
+          <rect x="52" y="30" width="10" height="12" rx="3" fill="#00d4ff" opacity="0.3"/>
+          <circle cx="44" cy="28" r="3" fill="#ff3333" opacity="0.8"/>
+          <rect x="10" y="16" width="6" height="10" rx="2" fill="#1a2535" stroke="#00d4ff" stroke-width="1"/>
+          <rect x="16" y="19" width="10" height="3" rx="1" fill="#00d4ff" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Ring / Wyze</div>
+      <div class="cam-name">Battery Cameras</div>
+      <div class="cam-desc">Wire-free outdoor cams. Mounted to siding, fascia, or soffit. No electrician needed.</div>
+    </div>
+
+    <div class="cam-card reveal reveal-delay-2">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Floodlight cam -->
+          <rect x="20" y="28" width="32" height="22" rx="5" fill="#1a2535" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="39" r="7" fill="#111820" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="39" r="3" fill="#00d4ff"/>
+          <ellipse cx="14" cy="25" rx="9" ry="6" fill="#1a2535" stroke="#ffaa00" stroke-width="1.5"/>
+          <ellipse cx="14" cy="25" rx="5" ry="3" fill="#ffaa00" opacity="0.3"/>
+          <ellipse cx="58" cy="25" rx="9" ry="6" fill="#1a2535" stroke="#ffaa00" stroke-width="1.5"/>
+          <ellipse cx="58" cy="25" rx="5" ry="3" fill="#ffaa00" opacity="0.3"/>
+          <rect x="33" y="18" width="6" height="10" rx="2" fill="#1a2535" stroke="#00d4ff" stroke-width="1"/>
+          <!-- light beams -->
+          <line x1="5" y1="17" x2="1" y2="10" stroke="#ffaa00" stroke-width="1" opacity="0.5"/>
+          <line x1="7" y1="20" x2="1" y2="18" stroke="#ffaa00" stroke-width="1" opacity="0.4"/>
+          <line x1="67" y1="17" x2="71" y2="10" stroke="#ffaa00" stroke-width="1" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Ring</div>
+      <div class="cam-name">Floodlight Cams</div>
+      <div class="cam-desc">Hardwired to existing junction box. Dual floods + 1080p HDR camera. Replaces old fixtures.</div>
+    </div>
+
+    <div class="cam-card reveal reveal-delay-3">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Solar cam -->
+          <rect x="18" y="30" width="30" height="22" rx="5" fill="#1a2535" stroke="#00ff88" stroke-width="1.5"/>
+          <circle cx="33" cy="41" r="7" fill="#111820" stroke="#00ff88" stroke-width="1.5"/>
+          <circle cx="33" cy="41" r="3" fill="#00ff88" opacity="0.6"/>
+          <rect x="8" y="10" width="22" height="14" rx="3" fill="#1a2535" stroke="#00ff88" stroke-width="1.5"/>
+          <!-- solar cells -->
+          <line x1="8" y1="17" x2="30" y2="17" stroke="#00ff88" stroke-width="0.8" opacity="0.5"/>
+          <line x1="19" y1="10" x2="19" y2="24" stroke="#00ff88" stroke-width="0.8" opacity="0.5"/>
+          <rect x="9" y="11" width="9" height="5" rx="1" fill="#00ff88" opacity="0.1"/>
+          <rect x="20" y="11" width="9" height="5" rx="1" fill="#00ff88" opacity="0.1"/>
+          <rect x="9" y="18" width="9" height="5" rx="1" fill="#00ff88" opacity="0.15"/>
+          <rect x="20" y="18" width="9" height="5" rx="1" fill="#00ff88" opacity="0.15"/>
+          <line x1="19" y1="24" x2="22" y2="30" stroke="#00ff88" stroke-width="1" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Ring / Arlo</div>
+      <div class="cam-name">Solar Cameras</div>
+      <div class="cam-desc">Panel + camera mounted and sun-aligned. Continuous power, zero wiring to your panel.</div>
+    </div>
+
+    <div class="cam-card reveal">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Blink mini/indoor -->
+          <rect x="22" y="20" width="28" height="32" rx="6" fill="#1a2535" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="34" r="8" fill="#111820" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="36" cy="34" r="4" fill="#00d4ff" opacity="0.25"/>
+          <circle cx="36" cy="34" r="1.8" fill="#00d4ff"/>
+          <circle cx="30" cy="24" r="2" fill="#00ff88" opacity="0.7"/>
+          <rect x="30" y="52" width="12" height="6" rx="3" fill="#1a2535" stroke="#00d4ff" stroke-width="1"/>
+          <rect x="34" y="58" width="4" height="5" rx="1" fill="#1a2535" stroke="#00d4ff" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Blink</div>
+      <div class="cam-name">Blink Indoor/Mini</div>
+      <div class="cam-desc">Compact plug-in or battery cams. Quick mounting, app sync, Alexa compatible.</div>
+    </div>
+
+    <div class="cam-card reveal reveal-delay-1">
+      <div class="cam-scan"></div>
+      <div class="cam-icon">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- PTZ Industrial cam -->
+          <circle cx="36" cy="30" r="16" fill="#1a2535" stroke="#ffaa00" stroke-width="2"/>
+          <circle cx="36" cy="30" r="10" fill="#111820" stroke="#ffaa00" stroke-width="1.5"/>
+          <circle cx="36" cy="30" r="5" fill="#ffaa00" opacity="0.2"/>
+          <circle cx="36" cy="30" r="2.5" fill="#ffaa00"/>
+          <rect x="30" y="46" width="12" height="8" rx="2" fill="#1a2535" stroke="#ffaa00" stroke-width="1"/>
+          <rect x="33" y="54" width="6" height="6" rx="1" fill="#1a2535" stroke="#ffaa00" stroke-width="1"/>
+          <!-- PTZ arrows -->
+          <path d="M22 30 L18 26 L18 34 Z" fill="#ffaa00" opacity="0.6"/>
+          <path d="M50 30 L54 26 L54 34 Z" fill="#ffaa00" opacity="0.6"/>
+          <path d="M36 16 L32 12 L40 12 Z" fill="#ffaa00" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="cam-brand">Commercial</div>
+      <div class="cam-name">PTZ / Industrial</div>
+      <div class="cam-desc">Pan-tilt-zoom systems, NVR integration, PoE networking for warehouses and businesses.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">All Services</div>
+  <h2>More Than <span>Cameras.</span></h2>
+  <p class="section-intro">Full-stack home tech — from the wall socket to the Wi-Fi signal.</p>
+
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="8" width="34" height="24" rx="3" fill="none" stroke="#00d4ff" stroke-width="1.8"/>
+          <line x1="4" y1="24" x2="38" y2="24" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+          <rect x="9" y="13" width="8" height="6" rx="1" fill="#00d4ff" opacity="0.15"/>
+          <circle cx="32" cy="16" r="4" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="32" cy="16" r="2" fill="#00d4ff" opacity="0.4"/>
+          <line x1="21" y1="40" x2="27" y2="40" stroke="#00d4ff" stroke-width="2"/>
+          <line x1="24" y1="32" x2="24" y2="40" stroke="#00d4ff" stroke-width="1.8"/>
+          <rect x="40" y="4" width="4" height="40" rx="2" fill="#00d4ff" opacity="0.2" stroke="#00d4ff" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="svc-title">TV Mounting</div>
+      <div class="svc-desc">Full-wall, corner, fireplace — every mount type. Cable concealment, soundbar alignment, and same-day availability for most sizes.</div>
+      <div class="svc-price">From $125 — Call for Quote</div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Speaker -->
+          <rect x="10" y="6" width="20" height="36" rx="4" fill="none" stroke="#00ff88" stroke-width="1.8"/>
+          <circle cx="20" cy="22" r="7" fill="none" stroke="#00ff88" stroke-width="1.5"/>
+          <circle cx="20" cy="22" r="3.5" fill="#00ff88" opacity="0.2"/>
+          <rect x="16" y="10" width="8" height="4" rx="2" fill="#00ff88" opacity="0.3"/>
+          <rect x="15" y="34" width="10" height="4" rx="2" fill="none" stroke="#00ff88" stroke-width="1"/>
+          <!-- sound waves -->
+          <path d="M33 16 Q40 22 33 28" stroke="#00ff88" stroke-width="1.5" fill="none" opacity="0.7"/>
+          <path d="M36 12 Q46 22 36 32" stroke="#00ff88" stroke-width="1.5" fill="none" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="svc-title">Speaker Installation</div>
+      <div class="svc-desc">Surround sound, in-wall/ceiling speakers, soundbars, and multi-room audio. We handle wiring, calibration, and setup.</div>
+      <div class="svc-price">From $75/speaker — Call for Quote</div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Computer -->
+          <rect x="6" y="8" width="30" height="22" rx="3" fill="none" stroke="#00d4ff" stroke-width="1.8"/>
+          <rect x="10" y="12" width="22" height="14" rx="1" fill="#00d4ff" opacity="0.07"/>
+          <!-- wrench -->
+          <path d="M32 28 L44 40 M36 24 L44 16 Q46 14 44 12 L40 16 L36 20 Z" stroke="#00d4ff" stroke-width="1.8" fill="none"/>
+          <circle cx="35" cy="26" r="3" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <line x1="18" y1="34" x2="24" y2="34" stroke="#00d4ff" stroke-width="2"/>
+          <line x1="21" y1="30" x2="21" y2="34" stroke="#00d4ff" stroke-width="1.8"/>
+        </svg>
+      </div>
+      <div class="svc-title">Computer Repair</div>
+      <div class="svc-desc">Slow PCs, virus removal, hardware swaps, screen replacement, data recovery, and OS reinstalls. Windows & Mac.</div>
+      <div class="svc-price">Diagnostic: $50 · Repairs from $75</div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Wi-Fi router -->
+          <rect x="10" y="28" width="28" height="14" rx="3" fill="none" stroke="#00d4ff" stroke-width="1.8"/>
+          <line x1="16" y1="34" x2="16" y2="38" stroke="#00d4ff" stroke-width="2"/>
+          <line x1="22" y1="32" x2="22" y2="38" stroke="#00d4ff" stroke-width="2"/>
+          <line x1="28" y1="34" x2="28" y2="38" stroke="#00d4ff" stroke-width="2"/>
+          <circle cx="34" cy="33" r="2" fill="#00ff88" opacity="0.8"/>
+          <!-- wifi arcs -->
+          <path d="M14 24 Q24 14 34 24" stroke="#00d4ff" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <path d="M10 20 Q24 7 38 20" stroke="#00d4ff" stroke-width="1.5" fill="none" opacity="0.3"/>
+          <path d="M18 27 Q24 20 30 27" stroke="#00d4ff" stroke-width="1.5" fill="none" opacity="0.8"/>
+          <circle cx="24" cy="29" r="1.5" fill="#00d4ff"/>
+        </svg>
+      </div>
+      <div class="svc-title">Wi-Fi & Networking</div>
+      <div class="svc-desc">Dead zones killed. Router setup, mesh network installation, extender placement, and ISP modem configuration.</div>
+      <div class="svc-price">From $85 — Site Assessment Free</div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Smart home hub -->
+          <circle cx="24" cy="24" r="16" fill="none" stroke="#ffaa00" stroke-width="1.8"/>
+          <circle cx="24" cy="24" r="8" fill="none" stroke="#ffaa00" stroke-width="1.5"/>
+          <circle cx="24" cy="24" r="3" fill="#ffaa00" opacity="0.5"/>
+          <!-- nodes -->
+          <circle cx="24" cy="8" r="2.5" fill="#ffaa00" opacity="0.7"/>
+          <circle cx="38" cy="16" r="2.5" fill="#ffaa00" opacity="0.7"/>
+          <circle cx="38" cy="32" r="2.5" fill="#ffaa00" opacity="0.7"/>
+          <circle cx="24" cy="40" r="2.5" fill="#ffaa00" opacity="0.7"/>
+          <circle cx="10" cy="32" r="2.5" fill="#ffaa00" opacity="0.7"/>
+          <circle cx="10" cy="16" r="2.5" fill="#ffaa00" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="svc-title">Smart Home Setup</div>
+      <div class="svc-desc">Google Home, Amazon Alexa, smart lights, thermostats, doorbells. Full ecosystem setup and automation programming.</div>
+      <div class="svc-price">Hourly: $85/hr · Packages Available</div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="corner"></div>
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- NVR / DVR system -->
+          <rect x="4" y="16" width="36" height="20" rx="3" fill="none" stroke="#00d4ff" stroke-width="1.8"/>
+          <rect x="8" y="20" width="20" height="12" rx="1" fill="#00d4ff" opacity="0.07"/>
+          <circle cx="34" cy="23" r="2" fill="#00ff88" opacity="0.8"/>
+          <circle cx="34" cy="29" r="2" fill="#ff3333" opacity="0.6"/>
+          <line x1="8" y1="26" x2="28" y2="26" stroke="#00d4ff" stroke-width="0.8" opacity="0.4"/>
+          <line x1="8" y1="22" x2="28" y2="22" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/>
+          <!-- hard drives -->
+          <rect x="10" y="36" width="10" height="6" rx="1" fill="none" stroke="#00d4ff" stroke-width="1"/>
+          <rect x="24" y="36" width="10" height="6" rx="1" fill="none" stroke="#00d4ff" stroke-width="1"/>
+          <line x1="40" y1="12" x2="44" y2="16" stroke="#00d4ff" stroke-width="1.5"/>
+          <line x1="40" y1="36" x2="44" y2="32" stroke="#00d4ff" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="svc-title">NVR / DVR Systems</div>
+      <div class="svc-desc">Full commercial recorder installation with hard drive setup, camera binding, remote access config, and retention scheduling.</div>
+      <div class="svc-price">Call for Commercial Pricing</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<div id="pricing">
+  <div class="inner">
+    <div class="section-label reveal">Camera Pricing</div>
+    <h2 class="reveal">Transparent.<br><span>Flat-Rate Pricing.</span></h2>
+    <p class="section-intro reveal">No surprises. Every quote itemized before we start. Hardware or labor-only — your choice.</p>
+
+    <table class="pricing-table reveal">
+      <thead>
+        <tr>
+          <th>Camera Type</th>
+          <th>Details</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">Wire-Free / Battery Camera <span class="pricing-tag tag-cam">Turnkey</span></td>
+          <td>Hardware + bracket mounting + app sync</td>
+          <td>$265</td>
+        </tr>
+        <tr>
+          <td class="row-label">Solar Camera System <span class="pricing-tag tag-cam">Turnkey</span></td>
+          <td>Camera + solar panel + sun-tracking alignment</td>
+          <td>$315</td>
+        </tr>
+        <tr>
+          <td class="row-label">Plug-In Outdoor Camera <span class="pricing-tag tag-cam">Turnkey</span></td>
+          <td>Hardware + clean cord routing + weather clips</td>
+          <td>$250</td>
+        </tr>
+        <tr>
+          <td class="row-label">Hardwired Floodlight Camera <span class="pricing-tag tag-cam">Turnkey</span></td>
+          <td>Old fixture removal + hardwired + weather seal</td>
+          <td>$425</td>
+        </tr>
+        <tr>
+          <td class="row-label">Smart Video Doorbell <span class="pricing-tag tag-cam">Turnkey</span></td>
+          <td>Chime box, transformer wiring, app setup</td>
+          <td>$275</td>
+        </tr>
+        <tr>
+          <td class="row-label">Labor Only — Battery/Solar <span class="pricing-tag tag-labor">Labor</span></td>
+          <td>You provide camera, we install</td>
+          <td>$115</td>
+        </tr>
+        <tr>
+          <td class="row-label">Labor Only — Hardwired Floodlight <span class="pricing-tag tag-labor">Labor</span></td>
+          <td>Breaker isolation, splice, weather seal</td>
+          <td>$195</td>
+        </tr>
+        <tr>
+          <td class="row-label">Masonry Mounting Surcharge <span class="pricing-tag tag-surcharge">Add-On</span></td>
+          <td>Brick, concrete, stone — per camera</td>
+          <td>+$30</td>
+        </tr>
+        <tr>
+          <td class="row-label">High-Access / Extension Ladder <span class="pricing-tag tag-surcharge">Add-On</span></td>
+          <td>Above 8ft A-frame height — per camera</td>
+          <td>+$55</td>
+        </tr>
+        <tr>
+          <td class="row-label">Minimum Service Visit</td>
+          <td>Covers dispatch & travel for small jobs</td>
+          <td>$175</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-label reveal">Why NorthWatch</div>
+  <h2 class="reveal" style="margin-bottom:48px;">Local. Honest. <span>Skilled.</span></h2>
+
+  <div class="why-grid">
+    <div class="why-item reveal">
+      <div class="why-num">01</div>
+      <div class="why-title">Flat-Rate Quotes</div>
+      <div class="why-body">You see the full price before we start. No hourly surprises, no hidden add-ons after the fact.</div>
+    </div>
+    <div class="why-item reveal reveal-delay-1">
+      <div class="why-num">02</div>
+      <div class="why-title">One Tech, Start to Finish</div>
+      <div class="why-body">Conor handles the call, the install, and the walkthrough. No dispatched strangers, no call centers — just one local tech who knows his stuff.</div>
+    </div>
+    <div class="why-item reveal reveal-delay-2">
+      <div class="why-title why-num">03</div>
+      <div class="why-title">All Brands Welcome</div>
+      <div class="why-body">Ring, Wyze, Blink, Arlo, Nest, Lorex — if it came in a box, Conor can get it working on your wall.</div>
+    </div>
+    <div class="why-item reveal reveal-delay-3">
+      <div class="why-num">04</div>
+      <div class="why-title">Payment on Completion</div>
+      <div class="why-body">Nothing due until the system is up, you've seen it on your phone, and you're happy with it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow reveal"></div>
+  <div class="section-label reveal" style="justify-content:center;">Get in Touch</div>
+  <h2 class="reveal" style="font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin-bottom: 16px;">Ready to get it done?</h2>
+  <p class="section-intro reveal" style="margin: 0 auto 40px; text-align:center;">Call or text Conor directly. Fast replies. Same-week scheduling in most cases.</p>
+
+  <a href="tel:+1" class="contact-tel reveal">Call or Text Conor</a>
+  <p class="contact-note reveal">Plymouth, IN · Marshall County · Northern Indiana · Fast Response</p>
+  <button class="btn-primary reveal" onclick="openQuote()">Get a Free Quote</button>
+  <p class="service-area reveal" style="margin-top: 40px;">Serving Plymouth · Bourbon · Culver · Argos · Bremen · Walkerton · Knox · South Bend Area</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-sm">NORTH<span>WATCH</span> TECH</div>
+  <div>Professional Security & Tech Installations · Plymouth, Indiana</div>
+  <div>© 2026 · All rights reserved</div>
+</footer>
+
+<!-- ═══ QUOTE MODAL ═══ -->
+<div id="quote-overlay" onclick="if(event.target===this)closeQuote()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div id="quote-modal" style="background:#0d1117;border:1px solid rgba(0,212,255,0.22);border-radius:6px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:36px;position:relative;scrollbar-width:thin;scrollbar-color:rgba(0,212,255,0.2) transparent;">
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;border-bottom:1px solid rgba(0,212,255,0.1);padding-bottom:20px;">
+      <div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:8px;"><span class="rec-dot"></span> Instant Estimate</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:1.6rem;font-weight:700;color:var(--white);">Get Your Free Quote</div>
+      </div>
+      <button onclick="closeQuote()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:0.85rem;flex-shrink:0;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='var(--muted)'">✕</button>
+    </div>
+
+    <!-- Step 1: Form -->
+    <div id="qm-step1">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+        <div style="display:flex;flex-direction:column;">
+          <label class="qm-label">Your Name</label>
+          <input class="qm-input" id="q-name" type="text" placeholder="John Smith" />
+        </div>
+
+        <div style="display:flex;flex-direction:column;">
+          <label class="qm-label">Phone Number</label>
+          <input class="qm-input" id="q-phone" type="tel" placeholder="(574) 555-0100" />
+        </div>
+
+        <div style="display:flex;flex-direction:column;grid-column:1/-1;">
+          <label class="qm-label">City / Location</label>
+          <input class="qm-input" id="q-location" type="text" placeholder="Plymouth, Culver, Bourbon…" />
+        </div>
+
+        <div style="grid-column:1/-1;">
+          <label class="qm-label" style="margin-bottom:10px;display:block;">Service Type</label>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <button class="svc-btn" data-svc="cameras" onclick="selectService(this)"><span style="font-size:1.3rem;">📷</span><br>Camera Install</button>
+            <button class="svc-btn" data-svc="tv" onclick="selectService(this)"><span style="font-size:1.3rem;">📺</span><br>TV Mounting</button>
+            <button class="svc-btn" data-svc="speakers" onclick="selectService(this)"><span style="font-size:1.3rem;">🔊</span><br>Speaker Setup</button>
+            <button class="svc-btn" data-svc="computer" onclick="selectService(this)"><span style="font-size:1.3rem;">💻</span><br>Computer Repair</button>
+            <button class="svc-btn" data-svc="wifi" onclick="selectService(this)"><span style="font-size:1.3rem;">📡</span><br>Wi-Fi / Networking</button>
+            <button class="svc-btn" data-svc="smarthome" onclick="selectService(this)"><span style="font-size:1.3rem;">🏠</span><br>Smart Home Setup</button>
+          </div>
+        </div>
+
+        <!-- Camera sub-options -->
+        <div id="cam-section" style="grid-column:1/-1;display:none;opacity:0;transition:opacity 0.3s;">
+          <label class="qm-label" style="margin-bottom:8px;display:block;">Camera Type</label>
+          <select class="qm-input" id="q-camtype" onchange="updateCamCount()">
+            <option value="">— Select camera type —</option>
+            <option value="battery">Wire-Free / Battery Camera — $265 turnkey</option>
+            <option value="solar">Solar Camera System — $315 turnkey</option>
+            <option value="plugin">Plug-In Outdoor Camera — $250 turnkey</option>
+            <option value="floodlight">Hardwired Floodlight Camera — $425 turnkey</option>
+            <option value="doorbell">Smart Video Doorbell — $275 turnkey</option>
+            <option value="labor-battery">Labor Only (Battery/Solar) — $115/cam</option>
+            <option value="labor-flood">Labor Only (Floodlight) — $195/cam</option>
+          </select>
+
+          <label class="qm-label" style="margin-top:18px;margin-bottom:8px;display:block;">How Many Cameras?</label>
+          <div style="display:flex;align-items:center;border:1px solid rgba(0,212,255,0.25);border-radius:3px;width:fit-content;overflow:hidden;">
+            <button onclick="changeCams(-1)" style="background:#111820;border:none;color:var(--cyan);width:44px;height:44px;font-size:1.4rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#1a2535'" onmouseout="this.style.background='#111820'">−</button>
+            <span id="cam-count" style="width:56px;text-align:center;font-family:'Orbitron',monospace;font-size:1rem;color:var(--white);background:#0d1117;display:block;line-height:44px;">1</span>
+            <button onclick="changeCams(1)" style="background:#111820;border:none;color:var(--cyan);width:44px;height:44px;font-size:1.4rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#1a2535'" onmouseout="this.style.background='#111820'">+</button>
+          </div>
+
+          <label class="qm-label" style="margin-top:20px;margin-bottom:10px;display:block;">Any of these apply? <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <label style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#111820;border:1px solid rgba(255,255,255,0.07);border-radius:3px;margin-bottom:8px;cursor:pointer;font-size:0.85rem;color:var(--text);">
+            <input type="checkbox" id="s-masonry" style="accent-color:var(--cyan);width:16px;height:16px;cursor:pointer;">
+            Brick / Concrete / Stone mounting <span style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--amber);margin-left:6px;">+$30/cam</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#111820;border:1px solid rgba(255,255,255,0.07);border-radius:3px;cursor:pointer;font-size:0.85rem;color:var(--text);">
+            <input type="checkbox" id="s-ladder" style="accent-color:var(--cyan);width:16px;height:16px;cursor:pointer;">
+            High-reach / extension ladder needed <span style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--amber);margin-left:6px;">+$55/cam</span>
+          </label>
+        </div>
+
+      </div>
+
+      <div id="qm-error" style="display:none;background:rgba(255,51,51,0.08);border:1px solid rgba(255,51,51,0.3);color:#ff6666;border-radius:3px;padding:10px 14px;font-size:0.82rem;margin-top:16px;"></div>
+
+      <button onclick="calcEstimate()" style="width:100%;background:var(--cyan);color:var(--black);border:none;border-radius:3px;padding:16px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:24px;transition:background 0.2s,transform 0.15s;" onmouseover="this.style.background='#00b8dd';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='var(--cyan)';this.style.transform='none'">Calculate My Estimate →</button>
+    </div>
+
+    <!-- Step 2: Result -->
+    <div id="qm-step2" style="display:none;">
+      <div style="background:#111820;border:1px solid rgba(0,212,255,0.2);border-radius:4px;padding:32px;text-align:center;margin-bottom:20px;">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">Your Estimated Quote</div>
+        <div id="result-amount" style="font-family:'Orbitron',monospace;font-size:clamp(2.2rem,8vw,3.8rem);font-weight:900;color:var(--white);line-height:1;margin-bottom:14px;"></div>
+        <div id="result-desc" style="color:var(--text);font-size:0.88rem;line-height:1.6;margin-bottom:16px;"></div>
+        <div style="font-size:0.75rem;color:var(--muted);border-top:1px solid rgba(255,255,255,0.06);padding-top:14px;">This is a free estimate based on standard pricing. Final quote confirmed on-site. No surprises.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="tel:+1" style="display:block;width:100%;background:var(--cyan);color:var(--black);border:none;border-radius:3px;padding:16px;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;">📞 Call or Text to Book</a>
+        <button onclick="resetQuote()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--muted);border-radius:3px;padding:12px;font-family:'Inter',sans-serif;font-size:0.85rem;cursor:pointer;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.1)'">← Start Over</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.qm-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: block;
+}
+.qm-input {
+  background: #111820;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 3px;
+  color: var(--white);
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+.qm-input:focus { border-color: var(--cyan); }
+.qm-input option { background: #111820; }
+.svc-btn {
+  background: #111820;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  color: var(--text);
+  padding: 14px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  text-align: center;
+  line-height: 1.4;
+}
+.svc-btn:hover { border-color: rgba(0,212,255,0.4); background: #1a2535; }
+.svc-btn.active { border-color: var(--cyan); background: rgba(0,212,255,0.08); color: var(--cyan); }
+@keyframes modalIn { from { opacity:0; transform:translateY(20px) scale(0.97); } to { opacity:1; transform:none; } }
+#quote-modal { animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1); }
+@media (max-width: 500px) {
+  #quote-modal { padding: 22px 16px; }
+}
+</style>
+
+<script>
+let camCount = 1;
+let selectedService = null;
+
+function openQuote() {
+  const overlay = document.getElementById('quote-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeQuote() {
+  document.getElementById('quote-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function selectService(btn) {
+  document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedService = btn.dataset.svc;
+  const cs = document.getElementById('cam-section');
+  if (selectedService === 'cameras') {
+    cs.style.display = 'block';
+    setTimeout(() => { cs.style.opacity = '1'; }, 10);
+  } else {
+    cs.style.opacity = '0';
+    setTimeout(() => { cs.style.display = 'none'; }, 250);
+  }
+}
+function changeCams(d) {
+  camCount = Math.max(1, Math.min(20, camCount + d));
+  document.getElementById('cam-count').textContent = camCount;
+}
+function updateCamCount() { /* just triggers re-read on submit */ }
+function calcEstimate() {
+  const name = document.getElementById('q-name').value.trim();
+  const phone = document.getElementById('q-phone').value.trim();
+  const loc = document.getElementById('q-location').value.trim();
+  const errEl = document.getElementById('qm-error');
+  if (!name || !phone || !loc || !selectedService) {
+    errEl.textContent = 'Please fill in your name, phone number, location, and select a service.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  let amountText, desc;
+
+  if (selectedService === 'cameras') {
+    const camType = document.getElementById('q-camtype').value;
+    if (!camType) {
+      errEl.textContent = 'Please select a camera type.';
+      errEl.style.display = 'block';
+      return;
+    }
+    const masonry = document.getElementById('s-masonry').checked;
+    const ladder = document.getElementById('s-ladder').checked;
+    const basePrice = { battery:265, solar:315, plugin:250, floodlight:425, doorbell:275, 'labor-battery':115, 'labor-flood':195 }[camType];
+    const labels = { battery:'Wire-Free Battery Camera', solar:'Solar Camera System', plugin:'Plug-In Outdoor Camera', floodlight:'Hardwired Floodlight Camera', doorbell:'Smart Video Doorbell', 'labor-battery':'Labor Only (Battery/Solar)', 'labor-flood':'Labor Only (Floodlight)' };
+    const count = camType === 'doorbell' ? 1 : camCount;
+    let surcharge = (masonry ? 30 : 0) + (ladder ? 55 : 0);
+    let total = (basePrice + surcharge) * count;
+    const belowMin = total < 175;
+    if (belowMin) total = 175;
+    amountText = '$' + total.toLocaleString();
+    let parts = [`${count}× ${labels[camType]} @ $${basePrice}/ea`];
+    if (masonry) parts.push('Masonry surcharge +$30/cam');
+    if (ladder) parts.push('High-reach surcharge +$55/cam');
+    if (belowMin) parts.push('$175 minimum service visit applied');
+    desc = parts.join(' · ');
+  } else {
+    const info = {
+      tv: { range:'$125 – $175', note:'Standard wall mount on wood stud. Cable concealment & specialty mounts may adjust final price.' },
+      speakers: { range:'$75 – $150 per speaker', note:'Varies by speaker type and wiring complexity. Multi-room setups quoted on-site.' },
+      computer: { range:'$75 – $150', note:'Includes $50 diagnostic. Viruses, slowdowns, hardware swaps, screen replacement, data recovery.' },
+      wifi: { range:'$85 – $150', note:'Router setup, mesh systems, dead zone elimination, ISP modem configuration.' },
+      smarthome: { range:'$85 – $200', note:'Billed at $85/hr. Covers Alexa/Google setup, smart lights, thermostats & automation.' }
+    }[selectedService];
+    amountText = info.range;
+    desc = info.note;
+  }
+
+  document.getElementById('result-amount').textContent = amountText;
+  document.getElementById('result-desc').textContent = desc;
+  document.getElementById('qm-step1').style.display = 'none';
+  document.getElementById('qm-step2').style.display = 'block';
+  document.getElementById('quote-modal').scrollTop = 0;
+}
+function resetQuote() {
+  document.getElementById('qm-step1').style.display = 'block';
+  document.getElementById('qm-step2').style.display = 'none';
+  document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cam-section').style.display = 'none';
+  document.getElementById('cam-section').style.opacity = '0';
+  document.getElementById('q-camtype').value = '';
+  document.getElementById('s-masonry').checked = false;
+  document.getElementById('s-ladder').checked = false;
+  document.getElementById('qm-error').style.display = 'none';
+  camCount = 1;
+  document.getElementById('cam-count').textContent = '1';
+  selectedService = null;
+}
+</script>
+
+<script>
+// ─── FLOATING CAMERA CANVAS ───
+(function() {
+  const canvas = document.getElementById('cam-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#00d4ff', '#00ff88', '#ffaa00'];
+
+  // Camera shapes: type, x, y, vx, vy, size, alpha, angle, rotSpeed
+  const cams = Array.from({length: 18}, (_, i) => ({
+    type: i % 5,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    size: 18 + Math.random() * 22,
+    alpha: 0.06 + Math.random() * 0.1,
+    angle: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.004,
+    color: colors[i % colors.length],
+  }));
+
+  function drawCam(c) {
+    ctx.save();
+    ctx.translate(c.x, c.y);
+    ctx.rotate(c.angle);
+    ctx.globalAlpha = c.alpha;
+    ctx.strokeStyle = c.color;
+    ctx.fillStyle = c.color;
+    ctx.lineWidth = 1;
+
+    const s = c.size;
+
+    if (c.type === 0) {
+      // Bullet cam
+      ctx.strokeRect(-s * 0.9, -s * 0.4, s * 1.8, s * 0.8);
+      ctx.beginPath();
+      ctx.arc(-s * 0.9, 0, s * 0.4, -Math.PI / 2, Math.PI / 2, true);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(s * 0.4, 0, s * 0.25, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (c.type === 1) {
+      // Dome cam
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.7, Math.PI, 0);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.strokeRect(-s * 0.9, 0, s * 1.8, s * 0.35);
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.3, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (c.type === 2) {
+      // PTZ cam
+      ctx.beginPath();
+      ctx.arc(0, -s * 0.1, s * 0.55, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeRect(-s * 0.2, s * 0.5, s * 0.4, s * 0.6);
+      ctx.strokeRect(-s * 0.35, s * 1.1, s * 0.7, s * 0.2);
+    } else if (c.type === 3) {
+      // Doorbell
+      ctx.strokeRect(-s * 0.45, -s * 0.9, s * 0.9, s * 1.8);
+      ctx.beginPath();
+      ctx.arc(0, -s * 0.2, s * 0.3, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeRect(-s * 0.2, s * 0.7, s * 0.4, s * 0.2);
+    } else {
+      // Box cam
+      ctx.strokeRect(-s * 0.6, -s * 0.5, s * 1.2, s);
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.28, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeRect(s * 0.6, -s * 0.2, s * 0.45, s * 0.4);
+    }
+
+    ctx.restore();
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+
+    cams.forEach(c => {
+      c.x += c.vx;
+      c.y += c.vy;
+      c.angle += c.rotSpeed;
+      if (c.x < -60) c.x = W + 60;
+      if (c.x > W + 60) c.x = -60;
+      if (c.y < -60) c.y = H + 60;
+      if (c.y > H + 60) c.y = -60;
+      drawCam(c);
+    });
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// ─── SCROLL REVEAL ───
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+})();
+
+// ─── NAV ACTIVE ───
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.background = window.scrollY > 40
+    ? 'rgba(8,12,16,0.97)'
+    : 'rgba(8,12,16,0.85)';
+});
+</script>
+</body>
+</html>
